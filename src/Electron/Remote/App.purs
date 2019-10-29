@@ -1,7 +1,5 @@
 module Electron.Remote.App (getAppPath, getPath, quit) where
 
-import Control.Monad.Eff (Eff)
-import Electron (ELECTRON)
 import Electron.App (Path(..))
 import Prelude (Unit, (>>>))
 
@@ -9,7 +7,7 @@ import Prelude (Unit, (>>>))
 -- | The current application directory.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appgetapppath)
-foreign import getAppPath :: forall eff. Eff (electron :: ELECTRON | eff) String
+foreign import getAppPath :: Effect String
 
 -- TODO: Remove this duplicate function when you figure out how to expose it
 -- without it being part of the public API
@@ -31,12 +29,12 @@ stringifyPath =
     Videos -> "videos"
     PepperFlash -> "pepperFlashSystemPlugin"
 
-foreign import getPath_ :: forall eff. String -> Eff (electron :: ELECTRON | eff) String
+foreign import getPath_ :: String -> Effect String
 
 -- | A path to a special directory or file.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appgetpathname)
-getPath :: forall eff. Path -> Eff (electron :: ELECTRON | eff) String
+getPath :: Path -> Effect String
 getPath =
   stringifyPath >>> getPath_
 
@@ -44,4 +42,4 @@ getPath =
 -- | Try to close all windows.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appquit)
-foreign import quit :: forall eff. Eff (electron :: ELECTRON | eff) Unit
+foreign import quit :: Effect Unit

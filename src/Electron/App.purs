@@ -8,15 +8,13 @@ module Electron.App
   , onReady
   ) where
 
-import Control.Monad.Eff (Eff)
-import Electron (ELECTRON)
 import Prelude (Unit, (>>>))
 
 
 -- | The current application directory.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appgetapppath)
-foreign import getAppPath :: forall eff. Eff (electron :: ELECTRON | eff) String
+foreign import getAppPath :: Effect String
 
 
 data Path
@@ -54,12 +52,12 @@ stringifyPath =
     Videos -> "videos"
     PepperFlash -> "pepperFlashSystemPlugin"
 
-foreign import getPath_ :: forall eff. String -> Eff (electron :: ELECTRON | eff) String
+foreign import getPath_ :: String -> Effect String
 
 -- | A path to a special directory or file.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appgetpathname)
-getPath :: forall eff. Path -> Eff (electron :: ELECTRON | eff) String
+getPath :: Path -> Effect String
 getPath =
   stringifyPath >>> getPath_
 
@@ -67,7 +65,7 @@ getPath =
 -- | Try to close all windows.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#appquit)
-foreign import quit :: forall eff. Eff (electron :: ELECTRON | eff) Unit
+foreign import quit :: Effect Unit
 
 
 -- | Emitted when the application is activated. Various actions can trigger this
@@ -76,7 +74,7 @@ foreign import quit :: forall eff. Eff (electron :: ELECTRON | eff) Unit
 -- | application's dock or taskbar icon.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#event-activate-macos)
-foreign import onActivate :: forall eff. Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onActivate :: Effect Unit -> Effect Unit
 
 
 -- | If you do not subscribe to this event and all windows are closed, the
@@ -84,10 +82,10 @@ foreign import onActivate :: forall eff. Eff (electron :: ELECTRON | eff) Unit -
 -- | whether the app quits or not.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/app#event-window-all-closed)
-foreign import onAllWindowsClosed :: forall eff. Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onAllWindowsClosed :: Effect Unit -> Effect Unit
 
 
 -- | Emitted when Electron has finished initialization.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/all/#event-39-ready-39)
-foreign import onReady :: forall eff. Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onReady :: Effect Unit -> Effect Unit

@@ -33,11 +33,9 @@ module Electron.BrowserWindow
   , send
   ) where
 
-import Control.Monad.Eff (Eff)
 import Data.Argonaut.Core (Json)
 import Data.Generic (class Generic)
 import Data.StrMap (StrMap)
-import Electron (ELECTRON)
 import Electron.Event (Event)
 import Electron.Options (encodeOptions)
 import Prelude (Unit, (>>>))
@@ -45,7 +43,7 @@ import Prelude (Unit, (>>>))
 
 foreign import data BrowserWindow :: Type
 
-foreign import newBrowserWindow :: forall eff. BrowserWindowOptions -> Eff (electron :: ELECTRON | eff) BrowserWindow
+foreign import newBrowserWindow :: BrowserWindowOptions -> Effect BrowserWindow
 
 
 newtype BrowserWindowOptions
@@ -118,78 +116,78 @@ changeZoomFactor zoom (BrowserWindowOptions opts) =
 -- | though.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/browser-window#winclose)
-foreign import close :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit
+foreign import close :: BrowserWindow -> Effect Unit
 
 
-foreign import loadURL :: forall eff. BrowserWindow -> String -> Eff (electron :: ELECTRON | eff) Unit
+foreign import loadURL :: BrowserWindow -> String -> Effect Unit
 
 
 -- | Minimizes the window. On some platforms the minimized window will be shown
 -- | in the Dock.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/browser-window#winminimize)
-foreign import minimize :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit
+foreign import minimize :: BrowserWindow -> Effect Unit
 
 
 -- | Shows and gives focus to the window.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/browser-window#winshow)
-foreign import show :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit
+foreign import show :: BrowserWindow -> Effect Unit
 
 
-foreign import onClose :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onClose :: BrowserWindow -> Effect Unit -> Effect Unit
 
 
 -- | Emitted when the window is closed. After you have received this event you
 -- | should remove the reference to the window and avoid using it any more.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/browser-window#event-closed)
-foreign import onClosed :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onClosed :: BrowserWindow -> Effect Unit -> Effect Unit
 
 
 -- | Emitted when the web page has been rendered (while not being shown) and
 -- | window can be displayed without a visual flash.
 -- |
 -- | [Official Electron documentation](https://electronjs.org/docs/api/browser-window#event-ready-to-show)
-foreign import onceReadyToShow :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onceReadyToShow :: BrowserWindow -> Effect Unit -> Effect Unit
 
 
 foreign import data WebContents :: Type
 
-foreign import webContents :: forall eff. BrowserWindow -> Eff (electron :: ELECTRON | eff) WebContents
+foreign import webContents :: BrowserWindow -> Effect WebContents
 
 
-foreign import onDidFinishLoad :: forall eff. WebContents -> Eff (electron :: ELECTRON | eff) Unit -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onDidFinishLoad :: WebContents -> Effect Unit -> Effect Unit
 
 
 -- | Emitted when a redirect is received while requesting a resource.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/web-contents/#event-did-get-redirect-request)
-foreign import onDidGetRedirectRequest :: forall eff. WebContents -> (Event -> String -> String -> Boolean -> Int -> String -> String -> StrMap String -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onDidGetRedirectRequest :: WebContents -> (Event -> String -> String -> Boolean -> Int -> String -> String -> StrMap String -> Effect Unit) -> Effect Unit
 
 
 -- | Emitted when a navigation is done.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/web-contents/#event-did-navigate)
-foreign import onDidNavigate :: forall eff. WebContents -> (Event -> String -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onDidNavigate :: WebContents -> (Event -> String -> Effect Unit) -> Effect Unit
 
 
 -- | Emitted when an in-page navigation happened.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/web-contents/#event-did-navigate-in-page)
-foreign import onDidNavigateInPage :: forall eff. WebContents -> (Event -> String -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onDidNavigateInPage :: WebContents -> (Event -> String -> Effect Unit) -> Effect Unit
 
 
 -- | Emitted when the document in the given frame is loaded.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/web-contents/#event-dom-ready)
-foreign import onDomReady :: forall eff. WebContents -> (Event -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onDomReady :: WebContents -> (Event -> Effect Unit) -> Effect Unit
 
 
-foreign import onNewWindow :: forall eff. WebContents -> (Event -> String -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onNewWindow :: WebContents -> (Event -> String -> Effect Unit) -> Effect Unit
 
 
-foreign import onWillNavigate :: forall eff. WebContents -> (Event -> String -> Eff (electron :: ELECTRON | eff) Unit) -> Eff (electron :: ELECTRON | eff) Unit
+foreign import onWillNavigate :: WebContents -> (Event -> String -> Effect Unit) -> Effect Unit
 
 
 data DevToolOption
@@ -200,11 +198,11 @@ derive instance genericDevToolOption :: Generic DevToolOption
 -- | Opens the devtools.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/all/#webcontents-opendevtools-options)
-openDevTools :: forall eff. WebContents -> Array DevToolOption -> Eff (electron :: ELECTRON | eff) Unit
+openDevTools :: WebContents -> Array DevToolOption -> Effect Unit
 openDevTools wc =
   encodeOptions >>> openDevToolsImpl wc
 
-foreign import openDevToolsImpl :: forall eff. WebContents -> Json -> Eff (electron :: ELECTRON | eff) Unit
+foreign import openDevToolsImpl :: WebContents -> Json -> Effect Unit
 
 
-foreign import send :: forall eff a. WebContents -> String -> Json -> Eff (electron :: ELECTRON | eff) Unit
+foreign import send :: WebContents -> String -> Json -> Effect Unit
