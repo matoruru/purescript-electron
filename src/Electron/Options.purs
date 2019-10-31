@@ -2,12 +2,11 @@ module Electron.Options (encodeOptions) where
 
 import Data.Argonaut.Core (Json)
 import Data.Argonaut.Encode (encodeJson)
-import Data.Argonaut.Encode.Generic (gEncodeJson')
 import Data.Foldable (foldl)
-import Data.Generic (class Generic, GenericSpine(SArray, SProd), toSpine)
+import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe(Just))
 import Data.Monoid ((<>))
-import Data.StrMap as M
+import Foreign.Object as O
 import Data.String (Pattern(..), drop, lastIndexOf, take, toLower)
 import Prelude ((+), (>>>), unit, (#), map)
 
@@ -15,11 +14,11 @@ encodeOptions :: forall a. (Generic a) => Array a -> Json
 encodeOptions = map toSpine >>> encodeOptions'
 
 encodeOptions' :: Array GenericSpine -> Json
-encodeOptions' = foldl insertOption M.empty >>> encodeJson
+encodeOptions' = foldl insertOption O.empty >>> encodeJson
   where
   insertOption strMap option =
     case option of
-      SProd qname [arg] -> M.insert (encodeKey qname) (encodeValue (force arg)) strMap
+      SProd qname [arg] -> O.insert (encodeKey qname) (encodeValue (force arg)) strMap
       _                 -> strMap
   encodeKey = simpleName >>> toCamelCase
   encodeValue (SArray options) = map force options # encodeOptions'

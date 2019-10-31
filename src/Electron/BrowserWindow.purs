@@ -34,8 +34,8 @@ module Electron.BrowserWindow
   ) where
 
 import Data.Argonaut.Core (Json)
-import Data.Generic (class Generic)
-import Data.StrMap (StrMap)
+import Data.Generic.Rep (class Generic)
+import Effect (Effect)
 import Electron.Event (Event)
 import Electron.Options (encodeOptions)
 import Prelude (Unit, (>>>))
@@ -163,7 +163,7 @@ foreign import onDidFinishLoad :: WebContents -> Effect Unit -> Effect Unit
 -- | Emitted when a redirect is received while requesting a resource.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/web-contents/#event-did-get-redirect-request)
-foreign import onDidGetRedirectRequest :: WebContents -> (Event -> String -> String -> Boolean -> Int -> String -> String -> StrMap String -> Effect Unit) -> Effect Unit
+foreign import onDidGetRedirectRequest :: WebContents -> (Event -> String -> String -> Boolean -> Int -> String -> String -> Object String -> Effect Unit) -> Effect Unit
 
 
 -- | Emitted when a navigation is done.

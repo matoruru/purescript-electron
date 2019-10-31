@@ -1,13 +1,14 @@
 module Electron.IpcRenderer (on, once, removeListener, removeAllListeners, send, sendSync, sendToHost) where
 
-import Prelude (Unit)
+import Effect (Effect)
 import Electron.Types (Channel, Listener)
+import Prelude (Unit)
 
 
 -- | Listens to channel, when a new message arrives the listener is called.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/ipc-renderer/#ipcrendereronchannel-listener)
-foreign import on :: Channel -> Listener eff -> Effect Unit
+foreign import on :: Channel -> Listener -> Effect Unit
 
 
 -- | Adds a one time listener function for the event.
@@ -15,14 +16,14 @@ foreign import on :: Channel -> Listener eff -> Effect Unit
 -- | after which it is removed.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/ipc-renderer/#ipcrendereroncechannel-listener)
-foreign import once :: Channel -> Listener eff -> Effect Unit
+foreign import once :: Channel -> Listener -> Effect Unit
 
 
 -- | Removes the specified listener from the listener array for the
 -- | specified channel.
 -- |
 -- | [Official Electron documentation](http://electron.atom.io/docs/api/ipc-renderer/#ipcrendererremovelistenerchannel-listener)
-foreign import removeListener :: Channel -> Listener eff -> Effect Unit
+foreign import removeListener :: Channel -> Listener -> Effect Unit
 
 
 -- | Removes all listeners for the specified channel.

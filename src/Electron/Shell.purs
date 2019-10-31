@@ -6,6 +6,7 @@ module Electron.Shell
   , beep
   ) where
 
+import Effect (Effect)
 import Prelude (Unit)
 
 -- | Show the given file in a file manager. If possible, select the file.

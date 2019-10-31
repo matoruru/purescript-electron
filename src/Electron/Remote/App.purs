@@ -1,5 +1,6 @@
 module Electron.Remote.App (getAppPath, getPath, quit) where
 
+import Effect (Effect)
 import Electron.App (Path(..))
 import Prelude (Unit, (>>>))
 

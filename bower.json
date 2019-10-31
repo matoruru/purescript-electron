@@ -16,9 +16,16 @@
     "bower_components"
   ],
   "dependencies": {
-    "purescript-eff": "3.1.0"
+    "purescript-prelude": "^4.1.1",
+    "purescript-console": "^4.2.0",
+    "purescript-effect": "^2.0.1",
+    "purescript-generics-rep": "^6.1.1",
+    "purescript-foreign-object": "^2.0.3",
+    "purescript-argonaut-core": "^5.0.1",
+    "purescript-argonaut-codecs": "^6.0.2",
+    "purescript-argonaut-generic": "^5.0.0"
   },
   "devDependencies": {
-    "purescript-psci-support": "^3.0.0"
+    "purescript-psci-support": "^4.0.0"
   }
 }

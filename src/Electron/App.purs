@@ -8,6 +8,7 @@ module Electron.App
   , onReady
   ) where
 
+import Effect (Effect)
 import Prelude (Unit, (>>>))
 
 
